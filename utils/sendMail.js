@@ -9,9 +9,9 @@ exports.sendVerificationMail = async (email, url) => {
   );
   const res = await transporter.sendMail({
     to: email,
-    fromName: 'GoChilika',
-    from: 'noreply@gochilika.in',
-    subject: 'Welcome to GoChilika!',
+    fromName: 'ExpressTeams',
+    from: 'noreply@expressTeams.in',
+    subject: 'Welcome to ExpressTeams!',
     text: `Please click on this url to verify your account\n${url}`,
   });
   console.log(res);
@@ -25,9 +25,9 @@ exports.sendResetPasswordMail = async (email, url) => {
   );
   await transporter.sendMail({
     to: email,
-    fromName: 'GoChilika',
-    from: 'noreply@gochilika.in',
-    subject: 'Reset your GoChilika password',
+    fromName: 'ExpressTeams',
+    from: 'noreply@expressteams.in',
+    subject: 'Reset your ExpressTeams password',
     text: `Please click on this url to reset your password.\n${url}\nIf you didn't request this, then you can ignore this email.`,
   });
 };
