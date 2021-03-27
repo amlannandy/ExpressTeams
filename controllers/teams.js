@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const Team = require('../models/Team');
 const asyncHandler = require('../middleware/asyncHandler');
 
@@ -104,5 +105,61 @@ exports.deleteTeam = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     msg: 'Team successfully deleted!',
+  });
+});
+
+exports.addTeamMember = asyncHandler(async (req, res, next) => {
+  let team = req.team;
+  const email = req.body.email;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      errors: ['User with this email does not exist'],
+    });
+  }
+  const members = team.members;
+  if (members.includes(user._id.toString())) {
+    return res.status(409).json({
+      success: false,
+      errors: ['User already in the team'],
+    });
+  }
+  await Team.findByIdAndUpdate(team._id, {
+    members: [...members, user],
+  });
+  team = await Team.findById(team._id);
+  res.status(200).json({
+    success: true,
+    errors: ['Member successfully added!'],
+    data: team,
+  });
+});
+
+exports.removeTeamMember = asyncHandler(async (req, res, next) => {
+  let team = req.team;
+  const email = req.body.email;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(200).json({
+      success: true,
+      errors: ['User with this email does not exist'],
+    });
+  }
+  const members = team.members;
+  if (!members.includes(user._id.toString())) {
+    return res.status(404).json({
+      success: false,
+      errors: ['User not present in the team'],
+    });
+  }
+  const index = members.indexOf(user._id.toString());
+  members.splice(index);
+  await Team.findByIdAndUpdate(team._id, { members });
+  team = await Team.findById(team._id);
+  res.status(200).json({
+    success: true,
+    errors: ['Member successfully removed!'],
+    data: team,
   });
 });
