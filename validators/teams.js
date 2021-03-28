@@ -10,6 +10,17 @@ exports.validateCreateOrUpdateTeam = [
   (req, res, next) => sendErrorResponse(req, res, next),
 ];
 
+exports.validateAddRemoveAdminOrMember = [
+  check('email')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('Please provide an email')
+    .isEmail()
+    .withMessage('Email is invalid'),
+  (req, res, next) => sendErrorResponse(req, res, next),
+];
+
 const sendErrorResponse = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

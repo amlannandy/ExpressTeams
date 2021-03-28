@@ -1,6 +1,6 @@
 const Team = require('../models/Team');
 
-const teamAdminHandler = async (req, res, next) => {
+const teamMemberHandler = async (req, res, next) => {
   const team = await Team.findById(req.params.teamId);
   if (!team) {
     return res.status(404).json({
@@ -11,7 +11,8 @@ const teamAdminHandler = async (req, res, next) => {
   const user = req.user;
   if (
     team.owner.toString() === user._id.toString() ||
-    team.admins.includes(user._id.toString())
+    team.admins.includes(user._id.toString()) ||
+    team.members.includes(user._id.toString())
   ) {
     req.team = team;
     next();
@@ -23,4 +24,4 @@ const teamAdminHandler = async (req, res, next) => {
   }
 };
 
-module.exports = teamAdminHandler;
+module.exports = teamMemberHandler;
