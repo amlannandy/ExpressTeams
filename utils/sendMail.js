@@ -7,14 +7,13 @@ exports.sendVerificationMail = async (email, url) => {
       apiKey: process.env.V2_API_KEY,
     })
   );
-  const res = await transporter.sendMail({
+  await transporter.sendMail({
     to: email,
     fromName: 'ExpressTeams',
     from: 'noreply@expressTeams.in',
     subject: 'Welcome to ExpressTeams!',
     text: `Please click on this url to verify your account\n${url}`,
   });
-  console.log(res);
 };
 
 exports.sendResetPasswordMail = async (email, url) => {
