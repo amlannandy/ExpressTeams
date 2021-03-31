@@ -28,7 +28,7 @@ const Login = () => {
               Log in
             </button>
             <Link to='/register' className='btn btn-primary btn-block'>
-              <i class='fas fa-user-plus mr-2'></i>
+              <i className='fas fa-user-plus mr-2'></i>
               Register instead
             </Link>
           </form>

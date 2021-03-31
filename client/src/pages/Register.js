@@ -1,9 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useReducer } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../images/logo.png';
+import formReducer from '../utils/formReducer';
+import { register, setAuthError } from '../store/actions/auth';
+
+const initialFormData = {
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useReducer(formReducer, initialFormData);
+  const { isLoading, isAuthenticated, error } = useSelector(
+    state => state.auth
+  );
+
+  const registerHandler = e => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      dispatch(setAuthError("Passwords don't match"));
+      return;
+    }
+    dispatch(register(formData));
+  };
+
+  if (!isLoading && isAuthenticated) {
+    return <Redirect to='/' />;
+  }
+
   return (
     <div className='d-flex justify-content-center my-5'>
       <div className='card'>
@@ -11,27 +40,64 @@ const Register = () => {
           <img src={Logo} alt='' />
         </div>
         <div className='card-body'>
-          {/* <div className='alert alert-danger'>
-            <small>This is a test error message</small>
-          </div> */}
-          <form>
+          {error ? (
+            <div className='alert alert-danger'>
+              <small>{error}</small>
+            </div>
+          ) : null}
+          <form onSubmit={registerHandler}>
             <div className='form-group'>
               <label>Full Name</label>
-              <input type='text' className='form-control' />
+              <input
+                required
+                name='name'
+                value={formData.name}
+                type='text'
+                className='form-control'
+                onChange={setFormData}
+                disabled={isLoading}
+              />
             </div>
             <div className='form-group'>
               <label>Email Address</label>
-              <input type='email' className='form-control' />
+              <input
+                required
+                name='email'
+                value={formData.email}
+                type='email'
+                className='form-control'
+                onChange={setFormData}
+                disabled={isLoading}
+              />
             </div>
             <div className='form-group'>
               <label>Password</label>
-              <input type='password' className='form-control' />
+              <input
+                required
+                name='password'
+                value={formData.password}
+                type='password'
+                className='form-control'
+                onChange={setFormData}
+                disabled={isLoading}
+              />
             </div>
             <div className='form-group'>
               <label>Confirm Password</label>
-              <input type='password' className='form-control' />
+              <input
+                required
+                name='confirmPassword'
+                value={formData.confirmPassword}
+                type='password'
+                className='form-control'
+                onChange={setFormData}
+                disabled={isLoading}
+              />
             </div>
-            <button className='btn btn-success btn-block'>
+            <button
+              type='submit'
+              className='btn btn-success btn-block'
+              disabled={isLoading}>
               <i className='fas fa-user-plus mr-2'></i>
               Register
             </button>

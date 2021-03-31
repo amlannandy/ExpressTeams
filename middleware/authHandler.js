@@ -28,12 +28,13 @@ const authHandler = async (req, res, next) => {
         errors: ['You need to be authenticated to use this route'],
       });
     }
-    if (!user.isVerified) {
-      return res.status(401).json({
-        success: false,
-        errors: ['Please verify your account first'],
-      });
-    }
+    // TODO : Fix this
+    // if (!user.isVerified) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     errors: ['Please verify your account first'],
+    //   });
+    // }
     req.user = user;
     next();
   } catch (error) {

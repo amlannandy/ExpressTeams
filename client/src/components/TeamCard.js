@@ -8,7 +8,7 @@ const TeamCard = () => {
           <p className='lead mb-0 font-weight-bold'>College Group</p>
           <small>All talks regarding our college</small>
           <br />
-          <span class='badge badge-info'>Created on 21/12/21</span>
+          <span className='badge badge-info'>Created on 21/12/21</span>
         </div>
         <div className='col-6'>
           <div className='row'>

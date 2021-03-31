@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+
+import store from './store/store';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -7,15 +10,15 @@ import Register from './pages/Register';
 
 const App = () => {
   return (
-    <Router>
+    <Provider store={store}>
       <Fragment>
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
+          <Route path='/login' exact component={Login} />
+          <Route path='/register' exact component={Register} />
         </Switch>
       </Fragment>
-    </Router>
+    </Provider>
   );
 };
 
