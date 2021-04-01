@@ -26,6 +26,24 @@ export const register = registerData => async dispatch => {
   }
 };
 
+export const login = loginData => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    const res = await axios.post('/auth/login', loginData);
+    const token = res.data.data;
+    const user = await getCurrentUser(token);
+    dispatch({ type: LOGIN, payload: { token, user } });
+    history.push('/');
+  } catch (error) {
+    const errors = error.response.data.errors;
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
+  }
+};
+
 export const setAuthError = message => dispatch => {
   dispatch({ type: SET_AUTH_ERROR, payload: message });
 };
