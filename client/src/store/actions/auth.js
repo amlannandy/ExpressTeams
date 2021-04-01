@@ -6,6 +6,7 @@ export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const TOGGLE_AUTH_LOADING = 'TOGGLE_AUTH_LOADING';
 
 export const register = registerData => async dispatch => {
@@ -67,6 +68,29 @@ export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
 };
 
+export const deleteAccount = password => async dispatch => {
+  try {
+    const token = getAuthToken();
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    await axios.delete('/auth/delete', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: { password },
+    });
+    localStorage.removeItem('express-token');
+    dispatch({ type: DELETE_ACCOUNT });
+    history.push('/register');
+  } catch (error) {
+    const errors = error.response.data.errors;
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
+  }
+};
+
 export const setAuthError = message => dispatch => {
   dispatch({ type: SET_AUTH_ERROR, payload: message });
 };
@@ -83,4 +107,8 @@ const getCurrentUser = async token => {
   } catch (error) {
     return null;
   }
+};
+
+const getAuthToken = () => {
+  return localStorage.getItem('express-token');
 };

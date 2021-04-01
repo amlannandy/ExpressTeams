@@ -3,6 +3,7 @@ import {
   LOGOUT,
   REGISTER,
   AUTHENTICATE,
+  DELETE_ACCOUNT,
   SET_AUTH_ERROR,
   TOGGLE_AUTH_LOADING,
 } from '../actions/auth';
@@ -29,6 +30,7 @@ const reducer = (state = initialState, action) => {
         token: payload.token,
       };
     case LOGOUT:
+    case DELETE_ACCOUNT:
       return {
         ...state,
         user: null,

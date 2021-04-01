@@ -14,7 +14,10 @@ const UserInfo = () => {
           <i className='fas fa-power-off mr-2'></i>
           Log out
         </button>
-        <button className='btn btn-danger btn-block'>
+        <button
+          className='btn btn-danger btn-block'
+          data-toggle='modal'
+          data-target='#deleteAccountModal'>
           <i className='fas fa-trash mr-2'></i>
           Delete Account
         </button>

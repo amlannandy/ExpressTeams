@@ -98,7 +98,6 @@ exports.verifyAccount = asyncHandler(async (req, res, next) => {
 // @description   Update a user's info
 // @route         PUT /api/v1/auth/update-info
 // @access        Private
-
 exports.updateUserInfo = asyncHandler(async (req, res, next) => {
   const id = req.user._id;
   const name = req.body.name;
