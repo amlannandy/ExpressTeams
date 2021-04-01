@@ -14,6 +14,7 @@ export const register = registerData => async dispatch => {
     const res = await axios.post('/auth/register', registerData);
     const token = res.data.data;
     const user = await getCurrentUser(token);
+    localStorage.setItem('express-token', token);
     dispatch({ type: REGISTER, payload: { token, user } });
     history.push('/');
   } catch (error) {
@@ -32,6 +33,7 @@ export const login = loginData => async dispatch => {
     const res = await axios.post('/auth/login', loginData);
     const token = res.data.data;
     const user = await getCurrentUser(token);
+    localStorage.setItem('express-token', token);
     dispatch({ type: LOGIN, payload: { token, user } });
     history.push('/');
   } catch (error) {
@@ -42,6 +44,27 @@ export const login = loginData => async dispatch => {
     }
     dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
   }
+};
+
+export const loadUser = () => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    const token = localStorage.getItem('express-token');
+    if (!token) {
+      dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
+    } else {
+      const user = await getCurrentUser(token);
+      dispatch({ type: AUTHENTICATE, payload: { token, user } });
+    }
+  } catch (error) {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
+  }
+};
+
+export const logout = () => dispatch => {
+  localStorage.removeItem('express-token');
+  history.push('/login');
+  dispatch({ type: LOGOUT });
 };
 
 export const setAuthError = message => dispatch => {

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
@@ -7,8 +7,13 @@ import store from './store/store';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { loadUser } from './store/actions/auth';
 
 const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <Provider store={store}>
       <Fragment>
