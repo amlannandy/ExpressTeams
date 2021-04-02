@@ -1,14 +1,17 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import User from '../images/user.png';
 
 const UserInfo = () => {
+  const { user } = useSelector(state => state.auth);
+
   return (
     <div className='card'>
       <div className='col text-center py-4'>
         <img src={User} alt='' height='150px' width='150px' />
-        <p className='lead mt-3 mb-0'>Amlan Kumar Nandy</p>
-        <small>amlannandy5@gmail.com</small>
+        <p className='lead mt-3 mb-0'>{user.name}</p>
+        <small>{user.email}</small>
         <hr />
         <button className='btn btn-secondary btn-block'>
           <i className='fas fa-power-off mr-2'></i>
