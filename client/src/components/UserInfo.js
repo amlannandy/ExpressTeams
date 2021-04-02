@@ -2,9 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import User from '../images/user.png';
+import { logout } from '../store/actions/auth';
 
 const UserInfo = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className='card'>
@@ -13,7 +19,7 @@ const UserInfo = () => {
         <p className='lead mt-3 mb-0'>{user.name}</p>
         <small>{user.email}</small>
         <hr />
-        <button className='btn btn-secondary btn-block'>
+        <button onClick={logoutHandler} className='btn btn-secondary btn-block'>
           <i className='fas fa-power-off mr-2'></i>
           Log out
         </button>
