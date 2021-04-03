@@ -1,21 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
+import { Redirect } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Logo from '../images/logo.png';
 import UserInfo from '../components/UserInfo';
 import TeamCard from '../components/TeamCard';
-import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router';
 import DeleteAccountModal from '../components/DeleteAccountModal';
+import { fetchTeams } from '../store/actions/teams';
 
 const Home = () => {
-  const dummy = [1, 2, 3, 4, 5];
+  const dispatch = useDispatch();
+  const { isLoading, teams, error } = useSelector(state => state.teams);
 
-  const { isLoading, isAuthenticated, error } = useSelector(
-    state => state.auth
-  );
+  useEffect(() => {
+    dispatch(fetchTeams());
+  }, [dispatch]);
 
-  if (!isLoading && !isAuthenticated) {
-    return <Redirect to='/login' />;
+  if (isLoading) {
+    return <h1>Loading</h1>;
   }
 
   return (
@@ -27,7 +29,7 @@ const Home = () => {
             <UserInfo />
           </div>
           <div className='col-9'>
-            {dummy.map(dum => (
+            {teams.map(team => (
               <TeamCard />
             ))}
           </div>

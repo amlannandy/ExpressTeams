@@ -54,7 +54,6 @@ export const loadUser = () => async dispatch => {
     if (!token) {
       dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
     } else {
-      setAxiosHeader(token);
       const user = await getCurrentUser(token);
       dispatch({ type: AUTHENTICATE, payload: { token, user } });
     }
@@ -94,19 +93,13 @@ export const setAuthError = message => dispatch => {
 
 const getCurrentUser = async token => {
   try {
-    const res = await axios.get('/auth/current-user');
+    const token = localStorage.getItem('express-token');
+    const res = await axios.get('/auth/current-user', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const user = res.data.data;
     return user;
   } catch (error) {
     return null;
   }
-};
-
-const setAxiosHeader = token => {
-  axios.interceptors.request.use(config => {
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
 };

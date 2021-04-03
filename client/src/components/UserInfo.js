@@ -6,11 +6,19 @@ import { logout } from '../store/actions/auth';
 
 const UserInfo = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
+  const { user, isLoading, isAuthenticated } = useSelector(state => state.auth);
 
   const logoutHandler = () => {
     dispatch(logout());
   };
+
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
+
+  if (!isAuthenticated) {
+    return <h1>Unauthorized</h1>;
+  }
 
   return (
     <div className='card'>

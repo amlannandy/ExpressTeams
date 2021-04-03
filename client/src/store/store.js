@@ -3,12 +3,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import auth from './reducers/auth';
-//import teams from './reducers/teams';
+import teams from './reducers/teams';
 
 // Combine each reducer here
 const rootReducer = combineReducers({
   auth,
-  //teams,
+  teams,
 });
 
 const initialState = {};
