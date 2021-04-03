@@ -30,7 +30,7 @@ const Home = () => {
           </div>
           <div className='col-9'>
             {teams.map(team => (
-              <TeamCard />
+              <TeamCard team={team} />
             ))}
           </div>
         </div>

@@ -1,14 +1,17 @@
 import React from 'react';
+import Moment from 'react-moment';
 
-const TeamCard = () => {
+const TeamCard = ({ team }) => {
   return (
     <div className='card mb-3 p-3'>
       <div className='row'>
         <div className='col-6'>
-          <p className='lead mb-0 font-weight-bold'>College Group</p>
-          <small>All talks regarding our college</small>
+          <p className='lead mb-0 font-weight-bold'>{team.name}</p>
+          <small>{team.description}</small>
           <br />
-          <span className='badge badge-info'>Created on 21/12/21</span>
+          <span className='badge badge-info'>
+            Created on <Moment format='HH:MM DD/MM/YY'>{team.createdAt}</Moment>
+          </span>
         </div>
         <div className='col-6'>
           <div className='row'>
