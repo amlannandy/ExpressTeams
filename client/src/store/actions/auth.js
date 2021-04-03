@@ -54,6 +54,7 @@ export const loadUser = () => async dispatch => {
     if (!token) {
       dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
     } else {
+      setAxiosHeader(token);
       const user = await getCurrentUser(token);
       dispatch({ type: AUTHENTICATE, payload: { token, user } });
     }
@@ -70,12 +71,8 @@ export const logout = () => dispatch => {
 
 export const deleteAccount = password => async dispatch => {
   try {
-    const token = getAuthToken();
     dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
     await axios.delete('/auth/delete', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       data: { password },
     });
     localStorage.removeItem('express-token');
@@ -97,11 +94,7 @@ export const setAuthError = message => dispatch => {
 
 const getCurrentUser = async token => {
   try {
-    const res = await axios.get('/auth/current-user', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.get('/auth/current-user');
     const user = res.data.data;
     return user;
   } catch (error) {
@@ -109,6 +102,11 @@ const getCurrentUser = async token => {
   }
 };
 
-const getAuthToken = () => {
-  return localStorage.getItem('express-token');
+const setAxiosHeader = token => {
+  axios.interceptors.request.use(config => {
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
 };
