@@ -10,8 +10,7 @@ const teamMemberHandler = async (req, res, next) => {
   }
   const user = req.user;
   if (
-    team.owner.toString() === user._id.toString() ||
-    team.admins.includes(user._id.toString()) ||
+    team.admin.toString() === user._id.toString() ||
     team.members.includes(user._id.toString())
   ) {
     req.team = team;
@@ -19,7 +18,7 @@ const teamMemberHandler = async (req, res, next) => {
   } else {
     return res.status(401).json({
       success: false,
-      errors: ['Not authorized to modify the team'],
+      errors: ['Not authorized to interact with this team'],
     });
   }
 };

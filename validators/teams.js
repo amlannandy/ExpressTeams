@@ -10,7 +10,7 @@ exports.validateCreateOrUpdateTeam = [
   (req, res, next) => sendErrorResponse(req, res, next),
 ];
 
-exports.validateAddRemoveAdminOrMember = [
+exports.validateAddRemoveMember = [
   check('email')
     .trim()
     .not()

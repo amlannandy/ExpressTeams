@@ -20,7 +20,7 @@ const TeamCard = ({ team }) => {
                 <small>Participants</small>
               </div>
               <div className='bg-secondary p-1 rounded-bottom'>
-                <h3>23</h3>
+                <h3>{Math.floor(Math.random() * 10)}</h3>
               </div>
             </div>
             <div className='col-7'>

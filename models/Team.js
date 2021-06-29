@@ -9,17 +9,14 @@ const TeamSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a description'],
   },
-  owner: {
+  admin: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true,
   },
-  admins: {
-    type: [mongoose.Schema.ObjectId],
-    required: true,
-  },
   members: {
     type: [mongoose.Schema.ObjectId],
+    ref: 'User',
   },
   createdAt: {
     type: Date,

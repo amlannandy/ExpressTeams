@@ -80,7 +80,6 @@ exports.logout = (req, res, next) => {
 // @description   Verify a user account
 // @route         GET /api/v1/auth/verify-account/:token
 // @access        Public
-
 exports.verifyAccount = asyncHandler(async (req, res, next) => {
   const token = req.params.token;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);

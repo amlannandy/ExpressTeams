@@ -1,6 +1,5 @@
 const express = require('express');
 
-const authHandler = require('../middleware/authHandler');
 const {
   fetchTeams,
   fetchTeam,
@@ -9,51 +8,50 @@ const {
   updateTeam,
   addTeamMember,
   removeTeamMember,
-  grantAdminPrivilege,
-  revokeAdminPrivilege,
 } = require('../controllers/teams');
 const {
   validateCreateOrUpdateTeam,
-  validateAddRemoveAdminOrMember,
+  validateAddRemoveMember,
 } = require('../validators/teams');
+const authHandler = require('../middleware/authHandler');
 const teamAdminHandler = require('../middleware/teamAdminHandler');
 const teamMemberHandler = require('../middleware/teamMemberHandler');
+const verifiedUserHandler = require('../middleware/verifiedUserHandler');
 
 const router = express.Router();
 
 router
   .route('/')
   .get(authHandler, fetchTeams)
-  .post([authHandler, validateCreateOrUpdateTeam], createTeam);
+  .post(
+    [authHandler, verifiedUserHandler, validateCreateOrUpdateTeam],
+    createTeam
+  );
 
 router
   .route('/:teamId')
-  .get(authHandler, teamMemberHandler, fetchTeam)
-  .put([authHandler, validateCreateOrUpdateTeam], updateTeam)
-  .delete(authHandler, deleteTeam);
+  .get([authHandler, verifiedUserHandler, teamMemberHandler], fetchTeam)
+  .put(
+    [
+      authHandler,
+      verifiedUserHandler,
+      teamAdminHandler,
+      validateCreateOrUpdateTeam,
+    ],
+    updateTeam
+  )
+  .delete([authHandler, verifiedUserHandler, teamAdminHandler], deleteTeam);
 
 router.put(
   '/:teamId/add-member',
-  [authHandler, teamAdminHandler, validateAddRemoveAdminOrMember],
+  [authHandler, verifiedUserHandler, teamAdminHandler, validateAddRemoveMember],
   addTeamMember
 );
 
-router.delete(
-  '/:teamId/remove-member',
-  [authHandler, teamAdminHandler, validateAddRemoveAdminOrMember],
-  removeTeamMember
-);
-
 router.put(
-  '/:teamId/grant-admin-access',
-  [authHandler, teamAdminHandler, validateAddRemoveAdminOrMember],
-  grantAdminPrivilege
-);
-
-router.delete(
-  '/:teamId/revoke-admin-access',
-  [authHandler, teamAdminHandler, validateAddRemoveAdminOrMember],
-  revokeAdminPrivilege
+  '/:teamId/remove-member',
+  [authHandler, verifiedUserHandler, teamAdminHandler, validateAddRemoveMember],
+  removeTeamMember
 );
 
 module.exports = router;

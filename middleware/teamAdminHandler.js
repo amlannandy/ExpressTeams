@@ -9,10 +9,7 @@ const teamAdminHandler = async (req, res, next) => {
     });
   }
   const user = req.user;
-  if (
-    team.owner.toString() === user._id.toString() ||
-    team.admins.includes(user._id.toString())
-  ) {
+  if (team.admin.toString() === user._id.toString()) {
     req.team = team;
     next();
   } else {

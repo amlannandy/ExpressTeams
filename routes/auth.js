@@ -1,6 +1,5 @@
 const express = require('express');
 
-const authHandler = require('../middleware/authHandler');
 const {
   register,
   login,
@@ -22,6 +21,8 @@ const {
   validateResetPassword,
   validateForgotPassword,
 } = require('../validators/auth');
+const authHandler = require('../middleware/authHandler');
+const verifiedUserHandler = require('../middleware/verifiedUserHandler');
 
 const router = express.Router();
 
@@ -29,17 +30,21 @@ router.post('/register', validateRegister, register);
 
 router.post('/login', validateLogin, login);
 
-router.get('/current-user', authHandler, getCurrentUser);
+router.get('/current-user', [authHandler, verifiedUserHandler], getCurrentUser);
 
-router.get('/logout', authHandler, logout);
+router.get('/logout', [authHandler, verifiedUserHandler], logout);
 
 router.get('/verify-account/:token', verifyAccount);
 
-router.put('/update-info', [authHandler, validateUpdateInfo], updateUserInfo);
+router.put(
+  '/update-info',
+  [authHandler, verifiedUserHandler, validateUpdateInfo],
+  updateUserInfo
+);
 
 router.put(
   '/update-password',
-  [authHandler, validateUpdatePassword],
+  [authHandler, verifiedUserHandler, validateUpdatePassword],
   updatePassword
 );
 
