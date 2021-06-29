@@ -21,6 +21,7 @@ app.use(express.json());
 // Import route files
 const auth = require('./routes/auth');
 const teams = require('./routes/teams');
+const chats = require('./routes/chats');
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -33,6 +34,7 @@ app.use(cors());
 // Mount routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/teams', teams);
+app.use('/api/v1/chats', chats);
 
 //Error handling middleware
 app.use(errorHandler);
