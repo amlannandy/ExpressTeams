@@ -39,7 +39,7 @@ class Routes {
   static void configureRouter(FluroRouter router) {
     router.define(
       HOME,
-      handler: homeHandler,
+      handler: loginHandler,
       transitionType: TransitionType.native,
     );
     router.define(
