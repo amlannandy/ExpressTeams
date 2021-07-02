@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:express_teams/services/Router.dart';
 
@@ -16,12 +17,13 @@ class ExpressTeamsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: const Color(0xff262C3C),
-        accentColor: const Color(0xff4FE3C1),
+        fontFamily: GoogleFonts.roboto().fontFamily,
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: const Color(0xff4FE3C1),
+              secondary: const Color(0xff262C3C),
+            ),
         backgroundColor: const Color(0xff262C3C),
         scaffoldBackgroundColor: const Color(0xff262C3C),
-        // focusColor: const Color(0xff4FE3C1),
-        // hintColor: const Color(0xff4FE3C1),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             primary: Color(0xff4FE3C1),
