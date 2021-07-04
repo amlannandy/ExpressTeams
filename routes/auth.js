@@ -30,7 +30,7 @@ router.post('/register', validateRegister, register);
 
 router.post('/login', validateLogin, login);
 
-router.get('/current-user', [authHandler, verifiedUserHandler], getCurrentUser);
+router.get('/current-user', authHandler, getCurrentUser);
 
 router.get('/logout', [authHandler, verifiedUserHandler], logout);
 

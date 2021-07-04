@@ -9,11 +9,10 @@ import {
 } from '../actions/auth';
 
 const initialState = {
-  isAuthenticated: false,
-  isLoading: false,
   user: null,
-  token: null,
   error: null,
+  isLoading: false,
+  isAuthenticated: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,8 +25,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: payload.user,
-        token: payload.token,
+        user: payload,
       };
     case LOGOUT:
     case DELETE_ACCOUNT:

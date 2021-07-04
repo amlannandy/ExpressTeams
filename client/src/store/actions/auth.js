@@ -14,9 +14,9 @@ export const register = registerData => async dispatch => {
     dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
     const res = await axios.post('/auth/register', registerData);
     const token = res.data.data;
-    const user = await getCurrentUser(token);
-    localStorage.setItem('express-token', token);
-    dispatch({ type: REGISTER, payload: { token, user } });
+    saveTokenToLocalStorage(token);
+    const user = await getCurrentUser();
+    dispatch({ type: REGISTER, payload: user });
     history.push('/');
   } catch (error) {
     const errors = error.response.data.errors;
@@ -33,9 +33,9 @@ export const login = loginData => async dispatch => {
     dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
     const res = await axios.post('/auth/login', loginData);
     const token = res.data.data;
-    const user = await getCurrentUser(token);
-    localStorage.setItem('express-token', token);
-    dispatch({ type: LOGIN, payload: { token, user } });
+    saveTokenToLocalStorage(token);
+    const user = await getCurrentUser();
+    dispatch({ type: LOGIN, payload: user });
     history.push('/');
   } catch (error) {
     const errors = error.response.data.errors;
@@ -50,12 +50,11 @@ export const login = loginData => async dispatch => {
 export const loadUser = () => async dispatch => {
   try {
     dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
-    const token = localStorage.getItem('express-token');
-    if (!token) {
-      dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
+    const user = await getCurrentUser();
+    if (user) {
+      dispatch({ type: AUTHENTICATE, payload: user });
     } else {
-      const user = await getCurrentUser(token);
-      dispatch({ type: AUTHENTICATE, payload: { token, user } });
+      dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
     }
   } catch (error) {
     dispatch({ type: TOGGLE_AUTH_LOADING, payload: false });
@@ -63,7 +62,7 @@ export const loadUser = () => async dispatch => {
 };
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('express-token');
+  removeTokenFromLocalStorage();
   history.push('/login');
   dispatch({ type: LOGOUT });
 };
@@ -74,7 +73,7 @@ export const deleteAccount = password => async dispatch => {
     await axios.delete('/auth/delete', {
       data: { password },
     });
-    localStorage.removeItem('express-token');
+    removeTokenFromLocalStorage();
     dispatch({ type: DELETE_ACCOUNT });
     history.push('/register');
   } catch (error) {
@@ -91,15 +90,25 @@ export const setAuthError = message => dispatch => {
   dispatch({ type: SET_AUTH_ERROR, payload: message });
 };
 
-const getCurrentUser = async token => {
+const getCurrentUser = async () => {
   try {
-    const token = localStorage.getItem('express-token');
-    const res = await axios.get('/auth/current-user', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await axios.get('/auth/current-user');
     const user = res.data.data;
     return user;
   } catch (error) {
     return null;
   }
+};
+
+const saveTokenToLocalStorage = token => {
+  localStorage.setItem('express-token', token);
+};
+
+export const getTokenFromLocalStorage = () => {
+  const token = localStorage.getItem('express-token');
+  return token;
+};
+
+const removeTokenFromLocalStorage = () => {
+  localStorage.removeItem('express-token');
 };
