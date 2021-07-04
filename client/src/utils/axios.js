@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getTokenFromLocalStorage } from '../store/actions/auth';
 
 const URL = 'http://localhost:5000/api/v1';
 
@@ -7,7 +8,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(config => {
-  const token = localStorage.getItem('express-token');
+  const token = getTokenFromLocalStorage();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
