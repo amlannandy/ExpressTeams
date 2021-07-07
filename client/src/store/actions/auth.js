@@ -19,7 +19,10 @@ export const register = registerData => async dispatch => {
     dispatch({ type: REGISTER, payload: user });
     history.push('/');
   } catch (error) {
-    const errors = error.response.data.errors;
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
     let errorMessage = 'Something went wrong!';
     if (errors) {
       errorMessage = errors[0];
@@ -38,7 +41,10 @@ export const login = loginData => async dispatch => {
     dispatch({ type: LOGIN, payload: user });
     history.push('/');
   } catch (error) {
-    const errors = error.response.data.errors;
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
     let errorMessage = 'Something went wrong!';
     if (errors) {
       errorMessage = errors[0];
@@ -77,7 +83,10 @@ export const deleteAccount = password => async dispatch => {
     dispatch({ type: DELETE_ACCOUNT });
     history.push('/register');
   } catch (error) {
-    const errors = error.response.data.errors;
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
     let errorMessage = 'Something went wrong!';
     if (errors) {
       errorMessage = errors[0];
