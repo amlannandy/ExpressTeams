@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'react-pro-sidebar/dist/css/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 const CustomSidebar = () => {
   const dispatch = useDispatch();
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const { user } = useSelector(state => state.auth);
 
   const logoutHandler = () => {
@@ -17,9 +18,18 @@ const CustomSidebar = () => {
 
   return (
     <div className='flex-column'>
-      <ProSidebar className='custom-sidebar'>
-        <UserInfo user={user} />
+      <ProSidebar className='custom-sidebar' collapsed={isCollapsed}>
+        {!isCollapsed ? (
+          <UserInfo user={user} onCollapse={() => setIsCollapsed(true)} />
+        ) : null}
         <Menu iconShape='square'>
+          {isCollapsed ? (
+            <MenuItem
+              onClick={() => setIsCollapsed(false)}
+              icon={<i className='fa fa-arrow-right'></i>}>
+              Expand
+            </MenuItem>
+          ) : null}
           <MenuItem icon={<i className='fa fa-users'></i>}>
             <Link to='/'>View Teams</Link>
           </MenuItem>
