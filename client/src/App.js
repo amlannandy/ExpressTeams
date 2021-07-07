@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
+import './app.css';
 import store from './store/store';
 
 import Home from './pages/Home';
