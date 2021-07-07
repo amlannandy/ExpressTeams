@@ -63,8 +63,8 @@ export const loadUser = () => async dispatch => {
 
 export const logout = () => dispatch => {
   removeTokenFromLocalStorage();
-  history.push('/login');
   dispatch({ type: LOGOUT });
+  history.push('/login');
 };
 
 export const deleteAccount = password => async dispatch => {

@@ -1,15 +1,21 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import 'react-pro-sidebar/dist/css/styles.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 
 import UserInfo from './UserInfo';
+import { logout } from '../store/actions/auth';
 
 const CustomSidebar = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
 
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
-    <div className='col p-0'>
+    <div className='flex-column'>
       <ProSidebar className='custom-sidebar'>
         <UserInfo user={user} />
         <Menu iconShape='square'>
@@ -23,7 +29,11 @@ const CustomSidebar = () => {
           <MenuItem icon={<i className='fa fa-trash'></i>}>
             Delete Account
           </MenuItem>
-          <MenuItem icon={<i className='fa fa-power-off'></i>}>Logout</MenuItem>
+          <MenuItem
+            icon={<i className='fa fa-power-off'></i>}
+            onClick={logoutHandler}>
+            Logout
+          </MenuItem>
         </Menu>
       </ProSidebar>
     </div>
