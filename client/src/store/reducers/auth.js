@@ -6,6 +6,7 @@ import {
   DELETE_ACCOUNT,
   SET_AUTH_ERROR,
   TOGGLE_AUTH_LOADING,
+  UPDATE_PASSWORD,
 } from '../actions/auth';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   error: null,
   isLoading: false,
   isAuthenticated: false,
+  message: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,9 +34,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
-        token: null,
         isAuthenticated: false,
         isLoading: false,
+      };
+    case UPDATE_PASSWORD:
+      return {
+        ...state,
+        isLoading: false,
+        message: payload,
+        error: null,
       };
     case TOGGLE_AUTH_LOADING:
       return {
