@@ -9,6 +9,7 @@ import {
   UPDATE_PASSWORD,
   UPDATE_INFO,
   SEND_PASSWORD_RESET_MAIL,
+  RESET_PASSWORD,
 } from '../actions/auth';
 
 const initialState = {
@@ -40,6 +41,7 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
       };
     case UPDATE_INFO:
+    case RESET_PASSWORD:
     case UPDATE_PASSWORD:
     case SEND_PASSWORD_RESET_MAIL:
       return {

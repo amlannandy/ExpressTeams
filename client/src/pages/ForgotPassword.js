@@ -21,7 +21,7 @@ const ForgotPassword = () => {
       <div className='card'>
         <div className='card-header'>
           <p className='lead font-weight-bold text-center my-0'>
-            <i className='fa fa-lock'> </i> Reset Password
+            <i className='fa fa-lock'> </i> Forgot Password
           </p>
         </div>
         <div className='card-body'>

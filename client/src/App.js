@@ -9,6 +9,7 @@ import { loadUser } from './store/actions/auth';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
 
 const App = () => {
@@ -23,6 +24,11 @@ const App = () => {
           <Route path='/login' exact component={Login} />
           <Route path='/register' exact component={Register} />
           <Route path='/forgot-password' exact component={ForgotPassword} />
+          <Route
+            path='/reset-password/:token'
+            exact
+            component={ResetPassword}
+          />
           <Route path='/' component={Home} />
         </Switch>
       </Fragment>
