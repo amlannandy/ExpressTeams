@@ -4,6 +4,7 @@ import history from '../../utils/history';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
+export const UPDATE_INFO = 'UPDATE_INFO';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
@@ -101,6 +102,26 @@ export const updatePassword = putData => async dispatch => {
     const res = await axios.put('/auth/update-password', putData);
     const message = res.data.msg;
     dispatch({ type: UPDATE_PASSWORD, payload: message });
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
+  }
+};
+
+export const updateInfo = name => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    const res = await axios.put('/auth/update-info', { name });
+    const message = res.data.msg;
+    dispatch(loadUser());
+    dispatch({ type: UPDATE_INFO, payload: message });
   } catch (error) {
     let errors;
     if (error.response) {

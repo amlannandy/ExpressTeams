@@ -7,6 +7,7 @@ import {
   SET_AUTH_ERROR,
   TOGGLE_AUTH_LOADING,
   UPDATE_PASSWORD,
+  UPDATE_INFO,
 } from '../actions/auth';
 
 const initialState = {
@@ -37,6 +38,7 @@ const reducer = (state = initialState, action) => {
         isAuthenticated: false,
         isLoading: false,
       };
+    case UPDATE_INFO:
     case UPDATE_PASSWORD:
       return {
         ...state,
