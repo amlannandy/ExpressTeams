@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendPasswordResetMail, setAuthError } from '../store/actions/auth';
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
-  const { isLoading, error, message } = useSelector(state => state.auth);
+  const { isLoading, error, message, isAuthenticated } = useSelector(
+    state => state.auth
+  );
 
   const forgotPasswordHandler = () => {
     if (!email) {
@@ -15,6 +17,10 @@ const ForgotPassword = () => {
     }
     dispatch(sendPasswordResetMail(email));
   };
+
+  if (!isLoading && isAuthenticated) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <div className='d-flex justify-content-center my-5'>

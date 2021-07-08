@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import formReducer from '../utils/formReducer';
@@ -14,7 +14,9 @@ const ResetPassword = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
-  const { isLoading, error, message } = useSelector(state => state.auth);
+  const { isLoading, error, message, isAuthenticated } = useSelector(
+    state => state.auth
+  );
 
   const resetPasswordHandler = e => {
     e.preventDefault();
@@ -25,6 +27,10 @@ const ResetPassword = () => {
     }
     dispatch(resetPassword(token, password));
   };
+
+  if (!isLoading && isAuthenticated) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <div className='d-flex justify-content-center my-5'>
