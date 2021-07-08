@@ -81,7 +81,6 @@ export const deleteAccount = password => async dispatch => {
     });
     removeTokenFromLocalStorage();
     dispatch({ type: DELETE_ACCOUNT });
-    history.push('/register');
   } catch (error) {
     let errors;
     if (error.response) {

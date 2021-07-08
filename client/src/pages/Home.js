@@ -23,12 +23,14 @@ const Home = () => {
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <Switch>
-            <Route path='/edit-profile' component={EditProfile} />
-            <Route path='/update-password' component={UpdatePassword} />
-            <Route path='/delete-account' component={DeleteAccount} />
-            <Route path='/' component={Teams} />
-          </Switch>
+          <div className='m-4'>
+            <Switch>
+              <Route path='/edit-profile' component={EditProfile} />
+              <Route path='/update-password' component={UpdatePassword} />
+              <Route path='/delete-account' component={DeleteAccount} />
+              <Route path='/' component={Teams} />
+            </Switch>
+          </div>
         )}
       </div>
     </div>
