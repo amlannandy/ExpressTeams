@@ -64,6 +64,9 @@ const Login = () => {
                 disabled={isLoading}
               />
             </div>
+            <div className='mb-2'>
+              <Link to='/forgot-password'>Forgot Password?</Link>
+            </div>
             <button
               type='submit'
               className='btn btn-success btn-block'

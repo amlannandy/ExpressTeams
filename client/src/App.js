@@ -4,11 +4,12 @@ import { Route, Switch } from 'react-router-dom';
 
 import './app.css';
 import store from './store/store';
+import { loadUser } from './store/actions/auth';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { loadUser } from './store/actions/auth';
+import ForgotPassword from './pages/ForgotPassword';
 
 const App = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const App = () => {
         <Switch>
           <Route path='/login' exact component={Login} />
           <Route path='/register' exact component={Register} />
+          <Route path='/forgot-password' exact component={ForgotPassword} />
           <Route path='/' component={Home} />
         </Switch>
       </Fragment>

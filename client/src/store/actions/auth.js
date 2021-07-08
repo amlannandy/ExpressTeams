@@ -10,6 +10,7 @@ export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const TOGGLE_AUTH_LOADING = 'TOGGLE_AUTH_LOADING';
+export const SEND_PASSWORD_RESET_MAIL = 'SEND_PASSWORD_RESET_MAIL';
 
 export const register = registerData => async dispatch => {
   try {
@@ -122,6 +123,25 @@ export const updateInfo = name => async dispatch => {
     const message = res.data.msg;
     dispatch(loadUser());
     dispatch({ type: UPDATE_INFO, payload: message });
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
+  }
+};
+
+export const sendPasswordResetMail = email => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    const res = await axios.post('/auth/forgot-password', { email });
+    const message = res.data.msg;
+    dispatch({ type: SEND_PASSWORD_RESET_MAIL, payload: message });
   } catch (error) {
     let errors;
     if (error.response) {

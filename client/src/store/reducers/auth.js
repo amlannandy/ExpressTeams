@@ -8,6 +8,7 @@ import {
   TOGGLE_AUTH_LOADING,
   UPDATE_PASSWORD,
   UPDATE_INFO,
+  SEND_PASSWORD_RESET_MAIL,
 } from '../actions/auth';
 
 const initialState = {
@@ -40,6 +41,7 @@ const reducer = (state = initialState, action) => {
       };
     case UPDATE_INFO:
     case UPDATE_PASSWORD:
+    case SEND_PASSWORD_RESET_MAIL:
       return {
         ...state,
         isLoading: false,
