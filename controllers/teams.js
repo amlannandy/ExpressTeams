@@ -72,9 +72,13 @@ exports.fetchMemberTeams = asyncHandler(async (req, res, next) => {
 // @route         GET /api/v1/teams/:teamId
 // @access        Private (Team Members only)
 exports.fetchTeam = asyncHandler(async (req, res, next) => {
+  const teamId = req.team._id;
+  const team = await Team.findById(teamId)
+    .populate('admin')
+    .populate('members');
   res.status(200).json({
     success: true,
-    data: req.team,
+    data: team,
     msg: 'Team successfully fetched',
   });
 });
