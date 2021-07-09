@@ -7,6 +7,8 @@ const {
   deleteTeam,
   updateTeam,
   addTeamMember,
+  fetchAdminTeams,
+  fetchMemberTeams,
   removeTeamMember,
 } = require('../controllers/teams');
 const {
@@ -22,11 +24,17 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authHandler, fetchTeams)
+  .get([authHandler, verifiedUserHandler], fetchTeams)
   .post(
     [authHandler, verifiedUserHandler, validateCreateOrUpdateTeam],
     createTeam
   );
+
+router.route('/admin').get([authHandler, verifiedUserHandler], fetchAdminTeams);
+
+router
+  .route('/member')
+  .get([authHandler, verifiedUserHandler], fetchMemberTeams);
 
 router
   .route('/:teamId')

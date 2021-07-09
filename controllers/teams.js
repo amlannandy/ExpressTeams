@@ -42,6 +42,32 @@ exports.fetchTeams = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @description   Get all teams in which user is admin
+// @route         GET /api/v1/teams/admin/
+// @access        Private
+exports.fetchAdminTeams = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+  const teams = await Team.find({ admin: userId });
+  res.status(200).json({
+    success: true,
+    data: teams,
+    msg: 'Admin teams successfully fetched',
+  });
+});
+
+// @description   Get all teams in which user is only member
+// @route         GET /api/v1/teams/member/
+// @access        Private
+exports.fetchMemberTeams = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+  const teams = await Team.find({ members: userId });
+  res.status(200).json({
+    success: true,
+    data: teams,
+    msg: 'Member teams successfully fetched',
+  });
+});
+
 // @description   Get a team by its id
 // @route         GET /api/v1/teams/:teamId
 // @access        Private (Team Members only)
