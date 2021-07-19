@@ -1,8 +1,9 @@
 import React, { useReducer } from 'react';
 import Modal from 'react-modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import formReducer from '../utils/formReducer';
+import { createTeam } from '../store/actions/teams';
 
 const customStyles = {
   content: {
@@ -13,6 +14,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
   },
+  overlay: { zIndex: 100000 },
 };
 
 const initialFormData = {
@@ -21,16 +23,22 @@ const initialFormData = {
 };
 
 const CreateUpdateTeam = ({ isEdit = false, isOpen, onCancel }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
   const { isLoading, error } = useSelector(state => state.teams);
 
+  const createUpdateTeamHandler = e => {
+    e.preventDefault();
+    dispatch(createTeam(formData, onCancel));
+  };
+
   return (
-    <Modal isOpen={isOpen} style={customStyles}>
-      <div className='card'>
+    <Modal isOpen={isOpen} style={customStyles} ariaHideApp={false}>
+      <form className='card' onSubmit={createUpdateTeamHandler}>
         <div className='card-header'>
           <p className='lead font-weight-bold'>Create Team</p>
         </div>
-        <form className='card-body'>
+        <div className='card-body'>
           {error ? (
             <div className='alert alert-danger'>
               <small>{error}</small>
@@ -50,26 +58,29 @@ const CreateUpdateTeam = ({ isEdit = false, isOpen, onCancel }) => {
           </div>
           <div className='form-group'>
             <label>Description</label>
-            <input
-              required
+            <textarea
               name='description'
+              cols='40'
+              rows='5'
+              required
               value={formData.description}
               type='text'
               className='form-control'
               onChange={setFormData}
-              disabled={isLoading}
-            />
+              disabled={isLoading}></textarea>
           </div>
-        </form>
+        </div>
         <div className='card-footer'>
           <div className='d-flex justify-content-between'>
             <button className='btn btn-danger' onClick={onCancel}>
               Cancel
             </button>
-            <button className='btn btn-success'>Confirm</button>
+            <button type='submit' className='btn btn-success'>
+              Confirm
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </Modal>
   );
 };
