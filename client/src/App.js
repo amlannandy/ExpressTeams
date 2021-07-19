@@ -9,6 +9,7 @@ import { loadUser } from './store/actions/auth';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import TeamDetails from './pages/TeamDetails';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
 
@@ -29,6 +30,7 @@ const App = () => {
             exact
             component={ResetPassword}
           />
+          <Route path='/:teamId' component={TeamDetails} />
           <Route path='/' component={Home} />
         </Switch>
       </Fragment>
