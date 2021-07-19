@@ -30,7 +30,7 @@ const App = () => {
             exact
             component={ResetPassword}
           />
-          <Route path='/:teamId' component={TeamDetails} />
+          <Route path='/team-details/:teamId' exact component={TeamDetails} />
           <Route path='/' component={Home} />
         </Switch>
       </Fragment>
