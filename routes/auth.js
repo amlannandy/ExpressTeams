@@ -11,6 +11,7 @@ const {
   updatePassword,
   forgotPassword,
   resetPassword,
+  getUsersList,
 } = require('../controllers/auth');
 const {
   validateRegister,
@@ -53,5 +54,7 @@ router.post('/forgot-password', validateForgotPassword, forgotPassword);
 router.post('/reset-password/:token', validateResetPassword, resetPassword);
 
 router.delete('/delete', [authHandler, validateDeleteAccount], deleteAccount);
+
+router.get('/users', authHandler, getUsersList);
 
 module.exports = router;

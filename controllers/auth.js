@@ -187,3 +187,14 @@ exports.deleteAccount = asyncHandler(async (req, res, next) => {
     msg: 'Account deleted',
   });
 });
+
+// @description   Get list of users
+// @route         GET /api/v1/auth/users
+// @access        Private
+exports.getUsersList = asyncHandler(async (req, res, next) => {
+  const users = await User.find({ isVerified: true });
+  res.status(200).json({
+    success: true,
+    data: users,
+  });
+});
