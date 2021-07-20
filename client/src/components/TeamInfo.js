@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import DeleteConfirmModal from './DeleteConfirmModal';
 import CreateUpdateTeam from '../pages/CreateUpdateTeam';
+import { deleteTeam } from '../store/actions/teams';
 
 const TeamInfo = () => {
+  const dispatch = useDispatch();
   const { team } = useSelector(state => state.teams);
   const [isUpdateTeamModalOpen, setIsUpdateTeamModalOpen] = useState(false);
+  const [isDeleteTeamModalOpen, setIsDeleteTeamModalOpen] = useState(false);
+
+  const deleteTeamHandler = () => {
+    dispatch(deleteTeam(team._id, () => setIsDeleteTeamModalOpen(false)));
+  };
 
   return (
     <div>
@@ -19,7 +27,9 @@ const TeamInfo = () => {
                 onClick={() => setIsUpdateTeamModalOpen(true)}>
                 <i className='fa fa-pencil-alt'></i>
               </button>
-              <button className='btn btn-light'>
+              <button
+                className='btn btn-light'
+                onClick={() => setIsDeleteTeamModalOpen(true)}>
                 <i className='fa fa-trash'></i>
               </button>
             </div>
@@ -32,6 +42,12 @@ const TeamInfo = () => {
         team={team}
         isOpen={isUpdateTeamModalOpen}
         onCancel={() => setIsUpdateTeamModalOpen(false)}
+      />
+      <DeleteConfirmModal
+        isOpen={isDeleteTeamModalOpen}
+        description={`Are you sure you want to delete the team ${team.name}?`}
+        onConfirm={deleteTeamHandler}
+        onCancel={() => setIsDeleteTeamModalOpen(false)}
       />
     </div>
   );
