@@ -4,10 +4,12 @@ import {
   FETCH_ADMIN_TEAMS,
   FETCH_MEMBER_TEAMS,
   TOGGLE_TEAMS_LOADING,
+  GET_TEAM,
 } from '../actions/teams';
 
 const initialState = {
   teams: [],
+  team: null,
   isLoading: false,
   error: null,
 };
@@ -35,6 +37,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         error: null,
         isLoading: payload,
+      };
+    case GET_TEAM:
+      return {
+        ...state,
+        error: null,
+        isLoading: false,
+        team: payload,
       };
     default:
       return state;

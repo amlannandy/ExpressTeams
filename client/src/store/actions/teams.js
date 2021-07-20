@@ -1,5 +1,6 @@
 import axios from '../../utils/axios';
 
+export const GET_TEAM = 'GET_TEAM';
 export const CREATE_TEAM = 'CREATE_TEAM';
 export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const SET_TEAMS_ERROR = 'SET_TEAMS_ERROR';
@@ -72,6 +73,25 @@ export const createTeam = (postData, closeModal) => async dispatch => {
     dispatch({ type: CREATE_TEAM, payload: message });
     closeModal();
     dispatch(fetchTeams());
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_TEAMS_ERROR, payload: errorMessage });
+  }
+};
+
+export const getTeam = id => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_TEAMS_LOADING, payload: true });
+    const res = await axios.get(`/teams/${id}`);
+    const data = res.data.data;
+    dispatch({ type: GET_TEAM, payload: data });
   } catch (error) {
     let errors;
     if (error.response) {
