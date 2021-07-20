@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
 import formReducer from '../utils/formReducer';
-import { createTeam } from '../store/actions/teams';
+import { createTeam, updateTeam } from '../store/actions/teams';
 
 const customStyles = {
   content: {
@@ -17,19 +17,27 @@ const customStyles = {
   overlay: { zIndex: 100000 },
 };
 
-const initialFormData = {
-  name: '',
-  description: '',
-};
-
-const CreateUpdateTeam = ({ isEdit = false, isOpen, onCancel }) => {
+const CreateUpdateTeam = ({ isEdit = false, team, isOpen, onCancel }) => {
+  let initialFormData = {
+    name: '',
+    description: '',
+  };
+  if (isEdit) {
+    initialFormData.name = team.name;
+    initialFormData.description = team.description;
+  }
   const dispatch = useDispatch();
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
   const { isLoading, error } = useSelector(state => state.teams);
 
   const createUpdateTeamHandler = e => {
     e.preventDefault();
-    dispatch(createTeam(formData, onCancel));
+    if (isEdit) {
+      const teamId = team._id;
+      dispatch(updateTeam(teamId, formData, onCancel));
+    } else {
+      dispatch(createTeam(formData, onCancel));
+    }
   };
 
   return (

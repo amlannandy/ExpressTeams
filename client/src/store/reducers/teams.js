@@ -5,6 +5,7 @@ import {
   FETCH_MEMBER_TEAMS,
   TOGGLE_TEAMS_LOADING,
   GET_TEAM,
+  UPDATE_TEAM,
 } from '../actions/teams';
 
 const initialState = {
@@ -39,6 +40,7 @@ const reducer = (state = initialState, action) => {
         isLoading: payload,
       };
     case GET_TEAM:
+    case UPDATE_TEAM:
       return {
         ...state,
         error: null,
