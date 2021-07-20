@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 
 import UserInfo from './UserInfo';
 import { logout } from '../store/actions/auth';
-import { Link } from 'react-router-dom';
 
 const CustomSidebar = () => {
   const dispatch = useDispatch();

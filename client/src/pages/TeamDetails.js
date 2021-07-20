@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-
-import { getTeam } from '../store/actions/teams';
-import EmptyBanner from '../components/EmptyBanner';
-import LoadingIndicator from '../components/LoadingIndicator';
+import { Route, Switch, useParams } from 'react-router-dom';
 
 import history from '../utils/history';
+import TeamInfo from '../components/TeamInfo';
+import { getTeam } from '../store/actions/teams';
+import EmptyBanner from '../components/EmptyBanner';
+import TeamMessages from '../components/TeamMessages';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const TeamDetails = () => {
   const dispatch = useDispatch();
@@ -43,11 +44,17 @@ const TeamDetails = () => {
           <i
             className='fa fa-cog text-secondary mr-3'
             style={{ cursor: 'pointer' }}
-            onClick={() => history.goBack()}>
+            onClick={() => history.push(`/team-details/${team._id}/info`)}>
             {' '}
           </i>
         </div>
       </nav>
+      <div className='container'>
+        <Switch>
+          <Route path='/team-details/:teamId/info' component={TeamInfo} />
+          <Route component={TeamMessages} />
+        </Switch>
+      </div>
     </div>
   );
 };
