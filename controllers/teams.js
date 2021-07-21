@@ -98,6 +98,9 @@ exports.updateTeam = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
+  team = await Team.findById(req.params.teamId)
+    .populate('admin')
+    .populate('members');
   res.status(200).json({
     success: true,
     data: team,
@@ -144,7 +147,9 @@ exports.addTeamMember = asyncHandler(async (req, res, next) => {
   }
   team.members.push(member._id);
   await team.save();
-  team = await Team.findById(team._id);
+  team = await Team.findById(req.team._id)
+    .populate('admin')
+    .populate('members');
   res.status(200).json({
     success: true,
     errors: ['Member successfully added!'],
@@ -174,7 +179,9 @@ exports.removeTeamMember = asyncHandler(async (req, res, next) => {
   const index = team.members.indexOf(member._id.toString());
   team.members.splice(index);
   await team.save();
-  team = await Team.findById(team._id);
+  team = await Team.findById(req.team._id)
+    .populate('admin')
+    .populate('members');
   res.status(200).json({
     success: true,
     errors: ['Member successfully removed!'],

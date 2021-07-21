@@ -6,6 +6,8 @@ import {
   TOGGLE_TEAMS_LOADING,
   GET_TEAM,
   UPDATE_TEAM,
+  ADD_TEAM_MEMBER,
+  REMOVE_TEAM_MEMBER,
 } from '../actions/teams';
 
 const initialState = {
@@ -41,6 +43,8 @@ const reducer = (state = initialState, action) => {
       };
     case GET_TEAM:
     case UPDATE_TEAM:
+    case ADD_TEAM_MEMBER:
+    case REMOVE_TEAM_MEMBER:
       return {
         ...state,
         error: null,

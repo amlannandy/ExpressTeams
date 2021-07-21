@@ -10,6 +10,7 @@ import {
   UPDATE_INFO,
   SEND_PASSWORD_RESET_MAIL,
   RESET_PASSWORD,
+  GET_USERS,
 } from '../actions/auth';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isLoading: false,
   isAuthenticated: false,
   message: null,
+  users: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -61,6 +63,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: payload,
+      };
+    case GET_USERS:
+      return {
+        ...state,
+        isLoading: false,
+        users: payload,
       };
     default:
       return state;

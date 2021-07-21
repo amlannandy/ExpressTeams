@@ -4,6 +4,7 @@ import history from '../../utils/history';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
+export const GET_USERS = 'GET_USERS';
 export const UPDATE_INFO = 'UPDATE_INFO';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
@@ -177,6 +178,25 @@ export const resetPassword = (token, password) => async dispatch => {
 
 export const setAuthError = message => dispatch => {
   dispatch({ type: SET_AUTH_ERROR, payload: message });
+};
+
+export const getUsersList = () => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_AUTH_LOADING, payload: true });
+    const res = await axios.get('/auth/users');
+    const data = res.data.data;
+    dispatch({ type: GET_USERS, payload: data });
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_AUTH_ERROR, payload: errorMessage });
+  }
 };
 
 const getCurrentUser = async () => {

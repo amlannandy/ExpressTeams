@@ -10,6 +10,8 @@ export const SET_TEAMS_ERROR = 'SET_TEAMS_ERROR';
 export const FETCH_ADMIN_TEAMS = 'FETCH_ADMIN_TEAMS';
 export const FETCH_MEMBER_TEAMS = 'FETCH_MEMBER_TEAMS';
 export const TOGGLE_TEAMS_LOADING = 'TOGGLE_TEAMS_LOADING';
+export const ADD_TEAM_MEMBER = 'ADD_TEAM_MEMBER';
+export const REMOVE_TEAM_MEMBER = 'REMOVE_TEAM_MEMBER';
 
 export const fetchTeams = () => async dispatch => {
   try {
@@ -136,6 +138,45 @@ export const deleteTeam = (id, closeModal) => async dispatch => {
     dispatch({ type: DELETE_TEAM, payload: data });
     closeModal();
     history.replace('/');
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_TEAMS_ERROR, payload: errorMessage });
+  }
+};
+
+export const addTeamMember = (teamId, email, closeModal) => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_TEAMS_LOADING, payload: true });
+    const res = await axios.put(`/teams/${teamId}/add-member`, { email });
+    const data = res.data.data;
+    dispatch({ type: ADD_TEAM_MEMBER, payload: data });
+    closeModal();
+  } catch (error) {
+    let errors;
+    if (error.response) {
+      errors = error.response.data.errors;
+    }
+    let errorMessage = 'Something went wrong!';
+    if (errors) {
+      errorMessage = errors[0];
+    }
+    dispatch({ type: SET_TEAMS_ERROR, payload: errorMessage });
+  }
+};
+
+export const removeTeamMember = (teamId, email) => async dispatch => {
+  try {
+    dispatch({ type: TOGGLE_TEAMS_LOADING, payload: true });
+    const res = await axios.put(`/teams/${teamId}/remove-member`, { email });
+    const data = res.data.data;
+    dispatch({ type: REMOVE_TEAM_MEMBER, payload: data });
   } catch (error) {
     let errors;
     if (error.response) {
